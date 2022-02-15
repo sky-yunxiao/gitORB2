@@ -503,6 +503,9 @@ bool Initializer::ReconstructF(vector<bool> &vbMatchesInliers, cv::Mat &F21, cv:
 
     int nMinGood = max(static_cast<int>(0.9*N),minTriangulated);
 
+    // print four situation
+    cout << "nGood " << nGood1 << " "<< nGood2 << " " << nGood3 << " " << nGood4 << "  min, max:" << nMinGood << " "<< maxGood << endl;
+
     int nsimilar = 0;
     if(nGood1>0.7*maxGood)
         nsimilar++;
@@ -512,6 +515,8 @@ bool Initializer::ReconstructF(vector<bool> &vbMatchesInliers, cv::Mat &F21, cv:
         nsimilar++;
     if(nGood4>0.7*maxGood)
         nsimilar++;
+
+    cout << "nsimilar " << nsimilar << endl;
 
     // If there is not a clear winner or not enough triangulated points reject initialization
     if(maxGood<nMinGood || nsimilar>1)
@@ -887,10 +892,13 @@ int Initializer::CheckRT(const cv::Mat &R, const cv::Mat &t, const vector<cv::Ke
 
         vCosParallax.push_back(cosParallax);
         vP3D[vMatches12[i].first] = cv::Point3f(p3dC1.at<float>(0),p3dC1.at<float>(1),p3dC1.at<float>(2));
-        nGood++;
+        //nGood++;
 
         if(cosParallax<0.99998)
+        {
             vbGood[vMatches12[i].first]=true;
+            nGood++;
+        }
     }
 
     if(nGood>0)

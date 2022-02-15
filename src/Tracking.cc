@@ -76,6 +76,7 @@ Tracking::Tracking(System *pSys, ORBVocabulary* pVoc, FrameDrawer *pFrameDrawer,
     }
     DistCoef.copyTo(mDistCoef);
 
+    // for stereo baseline * (focal length)
     mbf = fSettings["Camera.bf"];
 
     float fps = fSettings["Camera.fps"];
@@ -568,6 +569,7 @@ void Tracking::MonocularInitialization()
         // Set Reference Frame
         if(mCurrentFrame.mvKeys.size()>100)
         {
+            cout << "mCurrentFrame.mvKeys.size : " << mCurrentFrame.mvKeys.size() << endl;
             mInitialFrame = Frame(mCurrentFrame);
             mLastFrame = Frame(mCurrentFrame);
             mvbPrevMatched.resize(mCurrentFrame.mvKeysUn.size());
@@ -576,6 +578,7 @@ void Tracking::MonocularInitialization()
 
             if(mpInitializer)
                 delete mpInitializer;
+
 
             mpInitializer =  new Initializer(mCurrentFrame,1.0,200);
 
@@ -598,7 +601,7 @@ void Tracking::MonocularInitialization()
         // Find correspondences
         ORBmatcher matcher(0.9,true);
         int nmatches = matcher.SearchForInitialization(mInitialFrame,mCurrentFrame,mvbPrevMatched,mvIniMatches,100);
-
+        cout << "nmatches : " << nmatches << endl;
         // Check if there are enough correspondences
         if(nmatches<100)
         {

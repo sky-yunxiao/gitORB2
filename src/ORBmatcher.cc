@@ -169,8 +169,8 @@ int ORBmatcher::SearchByBoW(KeyFrame* pKF,Frame &F, vector<MapPoint*> &vpMapPoin
     vector<int> rotHist[HISTO_LENGTH];
     for(int i=0;i<HISTO_LENGTH;i++)
         rotHist[i].reserve(500);
-    const float factor = 1.0f/HISTO_LENGTH;
-
+    //const float factor = 1.0f/HISTO_LENGTH;
+    const float factor = HISTO_LENGTH/360.0f;
     // We perform the matching over ORB that belong to the same vocabulary node (at a certain level)
     DBoW2::FeatureVector::const_iterator KFit = vFeatVecKF.begin();
     DBoW2::FeatureVector::const_iterator Fit = F.mFeatVec.begin();
